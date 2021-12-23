@@ -11,12 +11,7 @@ import os
 import cv2
 import numpy as np 
 
-def get_bucket_path(image_name):
-        temp = image_name.split("_")
-        location = temp[0]
-        slide = temp[5][1:]
-        
-        return location,slide
+
 def main():
 # to_upload_to_s3: uploaded 2058 images 1st round
 
@@ -31,100 +26,103 @@ def main():
     print(sum(train['height'].value_counts()))
     print(sum(train['width'].value_counts()))
 
-    directory = r'D:\bedrock\11_15_2021_5th'
+    directory = r'D:\bedrock\11_15_2021_8th'
     
     count = 0
     bad_count = 0
-    # for subdir, dirs, files in os.walk(directory):
-    #     for idx, file in enumerate(files):
-    #         #get image file
-    #         image_dir = os.path.join(subdir, file)
-    #         print(image_dir)
+    for subdir, dirs, files in os.walk(directory):
+        for idx, file in enumerate(files):
+            #get image file
+            image_dir = os.path.join(subdir, file)
+            print(image_dir)
             
-    #         path = os.path.normpath(subdir)
+            path = os.path.normpath(subdir)
             
 
             
-    #         print(file)
+            print(file)
             
   
             
-    #         image_name = file.split(r'_')[1:]
-    #         image_name = '_'.join(image_name)
-    #         image_name = file
+            image_name = file.split(r'_')[1:]
+            image_name = '_'.join(image_name)
+            image_name = file
+            image_name = image_name.split(r'_')[1:]
+            image_name = '_'.join(image_name)
+            print(image_name)
 
             
-    #         image = cv2.imread(image_dir)
+            image = cv2.imread(image_dir)
             
-    #         image_x = (image.shape[1])
-    #         image_y = (image.shape[0])
-    #         print('imagex, y:', image_x, image_y)
+            image_x = (image.shape[1])
+            image_y = (image.shape[0])
+            print('imagex, y:', image_x, image_y)
             
-    #         for i in range(len(train['image_name'])):
-    #             # get a match from df
-    #             #print('name: ',train['image_name'][i])
+            for i in range(len(train['image_name'])):
+                # get a match from df
+                #print('name: ',train['image_name'][i])
 
 
-    #             if(train['width'][i]==None):
+                if(train['width'][i]==None):
 
-    #                 print('not in the database')
-    #                 # bad_count +=1
-    #                 # print('bad_count because none:', bad_count)
+                    print('not in the database')
+                    # bad_count +=1
+                    # print('bad_count because none:', bad_count)
                     
 
-    #                 continue
-    #             if(math.isnan(train['width'][i])):
-    #                 # bad_count +=1
-    #                 # print('bad_count because nan:', bad_count)
+                    continue
+                if(math.isnan(train['width'][i])):
+                    # bad_count +=1
+                    # print('bad_count because nan:', bad_count)
                     
 
-    #                 continue
+                    continue
 
-    #             if image_name == train['image_name'][i]:
-    #                 # found a match
+                if image_name == train['image_name'][i]:
+                    # found a match
                     
-    #                 print('its a match')
-    #                 print('image name from file:', image_name)
-    #                 print('image name from df:', train['image_name'][i])
-    #                 print('object id:', train['obj_id'][i])
-    #                 # cv2.imshow('ROI', image)
-    #                 # cv2.waitKey()
-    #                 #print(type(train['width'][i]))
+                    print('its a match')
+                    print('image name from file:', image_name)
+                    print('image name from df:', train['image_name'][i])
+                    print('object id:', train['obj_id'][i])
+                    # cv2.imshow('ROI', image)
+                    # cv2.waitKey()
+                    #print(type(train['width'][i]))
 
-    #                 # then get the bounding box
-    #                 width = int(train['width'][i]*image_x)
-    #                 height = int(train['height'][i]*image_y)
-    #                 left = int(train['left'][i]*image_x)
-    #                 top = int(train['top'][i]*image_y)
-    #                 bounding_boxes = (left, top, width, height)
-    #                 x,y,w,h = bounding_boxes
-    #                 print(x, y)
-    #                 if x==0 and y==0:
-    #                     print('width not applicable')
-    #                     bad_count +=1
-    #                     print('bad_count because x=0:', bad_count)
-    #                     continue
-    #                 ROI = image[y:y+h, x:x+w]
-    #                 new_image_name = train['obj_id'][i]+'_'+image_name
-    #                 print('new image name:', new_image_name)
-    #                 # cv2.imshow('ROI_edited', ROI)
-    #                 # cv2.waitKey()
-    #                 print(image_name)
-    #                 roi_filename = 'D:/bedrock/11_15_2021_6th_cropped/{}'.format( new_image_name)
+                    # then get the bounding box
+                    width = int(train['width'][i]*image_x)
+                    height = int(train['height'][i]*image_y)
+                    left = int(train['left'][i]*image_x)
+                    top = int(train['top'][i]*image_y)
+                    bounding_boxes = (left, top, width, height)
+                    x,y,w,h = bounding_boxes
+                    print(x, y)
+                    if x==0 and y==0:
+                        print('width not applicable')
+                        bad_count +=1
+                        print('bad_count because x=0:', bad_count)
+                        continue
+                    ROI = image[y:y+h, x:x+w]
+                    new_image_name = train['obj_id'][i]+'_'+image_name
+                    print('new image name:', new_image_name)
+                    # cv2.imshow('ROI_edited', ROI)
+                    # cv2.waitKey()
+                    print(image_name)
+                    roi_filename = 'D:/bedrock/11_15_2021_8th_test_corrupted_cropped/{}'.format( new_image_name)
 
                     
                 
-    #                 #cv2.imwrite(roi_filename, ROI)
+                    #cv2.imwrite(roi_filename, ROI)
                 
-    #                 if not cv2.imwrite(roi_filename, ROI):
-    #                     bad_count +=1
-    #                     print('bad_count becasue cant write image:', bad_count)
-    #                     raise Exception("Could not write image")
+                    if not cv2.imwrite(roi_filename, ROI):
+                        bad_count +=1
+                        print('bad_count becasue cant write image:', bad_count)
+                        raise Exception("Could not write image")
                         
-    #                 count+=1
-    #                 print('good_count:', count)
-    # print('good_count:', count)
-    # print('bad_count:', bad_count)
+                    count+=1
+                    print('good_count:', count)
+    print('good_count:', count)
+    print('bad_count:', bad_count)
     #11_15_2021_5th_cropped
     #passed: 9811
     #failed: 1064
